@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 .mvn/
 mvnw
 mvnw.cmd
 
+=======
+>>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 =======
 >>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 HELP.md
@@ -20,11 +23,17 @@ target/
 .springBeans
 .sts4-cache
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 .mvn/
 mvnw
 mvnw.cmd
 
+<<<<<<< HEAD
+>>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
+=======
 >>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 
 ### IntelliJ IDEA ###
