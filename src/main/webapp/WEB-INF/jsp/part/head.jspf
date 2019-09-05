@@ -78,12 +78,13 @@
 </style>
 
 
-
-<script>
-	var loginedMemberId = parseInt('${loginedMemberId}');
-</script>
+	<script>
+		var loginedMemberId = parseInt('${loginedMemberId}');
+	</script>
 </head>
+
 <body>	
+
 	<div class="top-menu-bar con-min-width">
 		<nav class="top-menu-1 con row">
 			<ul class="row cell-right">

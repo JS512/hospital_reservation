@@ -18,6 +18,7 @@ import com.sbs.hospital.handler.MailHandler;
 import com.sbs.hospital.util.CUtil;
 
 import jline.internal.Log;
+
 import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
@@ -273,6 +274,5 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 		}
 		return Maps.of("msg", msg, "resultCode", resultCode);
-	}
-	
+	}	
 }

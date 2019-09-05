@@ -1,5 +1,6 @@
 package com.sbs.hospital.dto;
 
+
 import java.util.Map;
 
 import lombok.AllArgsConstructor;

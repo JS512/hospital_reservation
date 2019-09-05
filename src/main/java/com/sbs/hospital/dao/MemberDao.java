@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.sbs.hospital.dto.Center;
 import com.sbs.hospital.dto.Dept;
 import com.sbs.hospital.dto.Member;
 
@@ -49,6 +48,7 @@ public interface MemberDao {
 
 	public void updateStaff(Map<String, Object> param);
 
-	public void deleteStaff(Map<String, Object> param);	
+	public void deleteStaff(Map<String, Object> param);
+
 
 }

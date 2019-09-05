@@ -31,11 +31,14 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		if (session.getAttribute("loginedMemberId") != null) {
 			long loginedMemberId = (long) session.getAttribute("loginedMemberId");
-			Member member = memberService.getOne(loginedMemberId);			
+
+			Member member = memberService.getOne(loginedMemberId);
+
 			request.setAttribute("isLogined", true);
 			request.setAttribute("loginedMember", member);
 			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("loginedMemberLoginId", member.getLoginId());
+			
 			String role = memberService.getMemberRole(loginedMemberId);
 			if(role == null) {
 				request.setAttribute("loginedMemberRole", "");
@@ -48,6 +51,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			request.setAttribute("loginedMemberId", 0L);
 			request.setAttribute("loginedMemberLoginId", "");
 			request.setAttribute("loginedMemberRole", "");
+
 		}
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

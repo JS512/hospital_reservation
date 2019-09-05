@@ -31,12 +31,12 @@ public class CounselReservationController {
 	@RequestMapping("/reservation/counselReservation")
 	public String Reservation(Model model) {
 		List<Map<String, Object>> doctorList = crs.getDoctorList();
-		List<Dept> d = crs.getDeptList();		
+		
+		List<Dept> d = crs.getDeptList();	
+
 		model.addAttribute("deptList", d);
 		List<Staff> s = crs.getStaffList();
 		model.addAttribute("staffList", s);
-
-		// model.addAttribute("doctorList", doctorList);
 
 		return "reservation/counselReservation";
 	}

@@ -15,7 +15,7 @@
 		<tbody>
 			<tr>
 				<th>이름</th>
-				<td><c:out value="${member.name}"  escapeXml="true"/></td>
+				<td><c:out value="${member.name}"  escapeXml="true"/></td>				
 			</tr>
 			<tr>
 				<th>ID</th>

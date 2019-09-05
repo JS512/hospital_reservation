@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 .mvn/
 mvnw
 mvnw.cmd
 
+=======
+>>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -16,6 +19,13 @@ target/
 .settings
 .springBeans
 .sts4-cache
+<<<<<<< HEAD
+=======
+.mvn/
+mvnw
+mvnw.cmd
+
+>>>>>>> 839cf5725479db1196bb69b61fe8462d1df8e43e
 
 ### IntelliJ IDEA ###
 .idea
