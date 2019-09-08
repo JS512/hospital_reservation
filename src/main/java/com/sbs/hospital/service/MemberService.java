@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sbs.hospital.dto.Dept;
 import com.sbs.hospital.dto.Member;
+import com.sbs.hospital.dto.Staff;
 
 public interface MemberService {
 	public Member getOne(long id);
@@ -37,5 +38,7 @@ public interface MemberService {
 	public Member getOneMemberWithStaffDept(Map<String, Object> param);
 
 	public Map<String, Object> updateMemberType(Map<String, Object> param);
+
+	public Staff getMemberStaff(int staffId);
 		
 }

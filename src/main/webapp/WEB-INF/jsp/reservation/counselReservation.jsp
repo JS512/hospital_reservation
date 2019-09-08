@@ -8,11 +8,12 @@
 
 <%@ include file="../part/head.jspf"%>
 
+<!-- datePicker -->
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css"
 	type="text/css" />
 
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
 	var deptList = {};
 </script>
@@ -83,6 +84,17 @@
 
 		//From의 초기값을 오늘 날짜로 설정
 		$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		$('#timepicker').timepicker({
+		    timeFormat: 'p h:mm',
+		    interval: 30,
+		    minTime: '09:00am',
+		    maxTime: '06:00pm',
+		    defaultTime: '09',
+		    startTime: '00:00',
+		    dynamic: true,
+		    dropdown: true,
+		    scrollbar: true
+		});
 
 	});
 
@@ -143,7 +155,7 @@
 			<tr>
 			<tr>
 				<th>날짜 선택</th>
-				<td><input type="text" id="datepicker"></td>
+				<td><input type="text" id="datepicker">	</td>				
 			</tr>
 			<tr>
 				<th>시간 선택</th>

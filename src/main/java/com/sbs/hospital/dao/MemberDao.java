@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.sbs.hospital.dto.Dept;
 import com.sbs.hospital.dto.Member;
+import com.sbs.hospital.dto.Staff;
 
 
 @Mapper
@@ -49,6 +50,8 @@ public interface MemberDao {
 	public void updateStaff(Map<String, Object> param);
 
 	public void deleteStaff(Map<String, Object> param);
+
+	public Staff getMemberStaff(int staffId);
 
 
 }

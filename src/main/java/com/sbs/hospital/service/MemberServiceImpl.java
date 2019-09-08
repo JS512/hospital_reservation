@@ -14,6 +14,7 @@ import com.sbs.hospital.dao.MemberDao;
 import com.sbs.hospital.dto.Center;
 import com.sbs.hospital.dto.Dept;
 import com.sbs.hospital.dto.Member;
+import com.sbs.hospital.dto.Staff;
 import com.sbs.hospital.handler.MailHandler;
 import com.sbs.hospital.util.CUtil;
 
@@ -246,6 +247,7 @@ public class MemberServiceImpl implements MemberService {
 		try {
 			if(param.get("deptId").equals("0")) {
 				if(member != null) {	
+					// 일반 회원으로 전환
 					param.put("staffId", 0);
 					memberDao.deleteStaff(param);
 					memberDao.updateMemberType(param);
@@ -255,11 +257,13 @@ public class MemberServiceImpl implements MemberService {
 				resultCode = "S-1";
 			}else {		
 				
-				if(member.getStaffId() == 0) {					
+				if(member.getStaffId() == 0) {	
+					// 일반회원에서 역할 전환 (스태프에 추가)
 					memberDao.addStaff(param);
 					memberDao.updateMemberType(param);
 					
 				}else {
+					// 원래 스태프 정보 업데이트
 					param.put("staffId", member.getStaffId());
 					memberDao.updateStaff(param);	
 					
@@ -274,5 +278,10 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 		}
 		return Maps.of("msg", msg, "resultCode", resultCode);
+	}
+
+	@Override
+	public Staff getMemberStaff(int staffId) {		
+		return memberDao.getMemberStaff(staffId);
 	}	
 }

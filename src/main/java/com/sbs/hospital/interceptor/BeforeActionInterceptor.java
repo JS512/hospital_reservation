@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.sbs.hospital.dto.Member;
+import com.sbs.hospital.dto.Staff;
 import com.sbs.hospital.service.MemberService;
 
 
@@ -33,11 +34,13 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			long loginedMemberId = (long) session.getAttribute("loginedMemberId");
 
 			Member member = memberService.getOne(loginedMemberId);
+			Staff staff = memberService.getMemberStaff(member.getStaffId());
 
 			request.setAttribute("isLogined", true);
 			request.setAttribute("loginedMember", member);
 			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("loginedMemberLoginId", member.getLoginId());
+			request.setAttribute("loginedMemberStaff", staff);
 			
 			String role = memberService.getMemberRole(loginedMemberId);
 			if(role == null) {
@@ -51,7 +54,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			request.setAttribute("loginedMemberId", 0L);
 			request.setAttribute("loginedMemberLoginId", "");
 			request.setAttribute("loginedMemberRole", "");
-
+			request.setAttribute("loginedMemberStaff", null);
 		}
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

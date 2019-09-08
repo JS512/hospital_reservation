@@ -133,6 +133,14 @@
 	<update id="updateMemberType" parameterType="map">
 		UPDATE `member`
 		SET staffId = #{staffId}
+		<if test="staffId != 0 and staffType != null and staffType != ''">
+			<if test="staffType == '의사'">
+				, permissionLevel = 1
+			</if>
+		</if>
+		<if test="staffId == 0">
+			, permissionLevel = 0
+		</if>
 		WHERE id = #{id}
 	</update>
 	
@@ -160,6 +168,11 @@
 		DELETE FROM staff
 		WHERE id = #{staffId}
 	</delete>
+	
+	<select id="getMemberStaff" parameterType="Integer" resultType="Staff">
+		SELECT * FROM staff
+		WHERE id = #{staffId}
+	</select>
 	
 	<resultMap type="com.sbs.hospital.dto.Member" id="Member">
 		<id property="id" column="id" />
