@@ -24,13 +24,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Autowired
 	@Qualifier("adminInterceptor")
 	HandlerInterceptor adminInterceptor;
+	
+	@Autowired
+	@Qualifier("needPermission1")
+	HandlerInterceptor needPermission1;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**");
-		
-		registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**");
-
+		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**");	
 
 		registry.addInterceptor(needToLoginInterceptor).addPathPatterns("/**").excludePathPatterns("/")
 				.excludePathPatterns("/member/login").excludePathPatterns("/member/doLogin")
@@ -39,6 +40,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/member/doSearchId").excludePathPatterns("/member/doSearchPw")
 				.excludePathPatterns("/article/list").excludePathPatterns("/article/detail")
 				.excludePathPatterns("/article/getReplies").excludePathPatterns("/resource/**");
+		
+		registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**");
+		
+		registry.addInterceptor(needPermission1).addPathPatterns("/schedule/staffSchedule", "/schedule/addEmptySchedule")
+		.addPathPatterns("/schedule/deleteEmptySchedule");
 
 		registry.addInterceptor(needToLogoutInterceptor).addPathPatterns("/member/login")
 				.addPathPatterns("/member/doLogin").addPathPatterns("/member/join").addPathPatterns("/member/doJoin");

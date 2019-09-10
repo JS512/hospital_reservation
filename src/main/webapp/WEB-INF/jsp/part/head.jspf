@@ -98,6 +98,9 @@
 					<li class="cell"><a href="/member/myPage" class="relative">MY PAGE</a></li>
 					<li class="cell"><a href="/member/doLogout" class="relative">로그아웃</a></li>
 					<li class="cell"><a href="/member/modify" class="relative">회원정보수정</a></li>
+					<c:if test="${loginedMember.permissionLevel >= 1 }">
+						<li class="cell"><a href="/schedule/staffSchedule" class="relative">스케줄 관리[${loginedMember.permissionLevel }]</a></li> 
+					</c:if>
 				</c:if>
 				<li class="cell"><a href="#">고객센터</a></li>
 			</ul>

@@ -28,18 +28,45 @@
 </c:forEach>
 
 <c:forEach var="staff" items="${staffList}">
-	<script>
+	<script>		
 		var staff = {};
 		staff.id = ${staff.id};
 		staff.name = '${staff.name}';
+		staff.schedules = [];
+	</script>
+	
+	<c:forEach var="schedule" items="${emptyScheduleList}">
+		<script>		
+			if(${schedule.staffId} == ${staff.id}){
+				
+				var schedule = {};
+				var time = '${schedule.startTime}'.split(" ");
+				var date = time[0];
+				var startTime = time[1];
+				var endTime = ('${schedule.endTime}'.split(" "))[1];
+	
+				schedule.id = ${schedule.id};
+				schedule.date = date;
+				schedule.startTime = startTime;
+				schedule.endTime = endTime;
 
+				staff.schedules.push(schedule);				
+			}
+					
+		</script>
+	</c:forEach>
+	
+	<script>
 		deptList[${staff.deptId}].doctors.push(staff);
 	</script>
 </c:forEach>
 
+
+
 <script>
 	$(function() {
 		//모든 datepicker에 대한 공통 옵션 설정
+		
 		$.datepicker
 				.setDefaults({
 					dateFormat : 'yy-mm-dd' //Input Display Format 변경
@@ -78,23 +105,17 @@
 					maxDate : "+2M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)       
 
 				});
-
+		
+		$("#datepicker").on("keydown", function(){
+			return false;
+		})
+		.attr("placeholder", "누르면 날짜 선택 가능");
 		//input을 datepicker로 선언
 		$("#datepicker").datepicker();
 
 		//From의 초기값을 오늘 날짜로 설정
-		$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-		$('#timepicker').timepicker({
-		    timeFormat: 'p h:mm',
-		    interval: 30,
-		    minTime: '09:00am',
-		    maxTime: '06:00pm',
-		    defaultTime: '09',
-		    startTime: '00:00',
-		    dynamic: true,
-		    dropdown: true,
-		    scrollbar: true
-		});
+		//$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		
 
 	});
 
@@ -107,21 +128,88 @@
 
 		$doctorSelectBox.empty();
 
+		$doctorSelectBox.append('<option value="">의사 선택</option>');
 		if ( selectedDeptId ) {
 			for ( var i = 0; i < dept.doctors.length; i++ ) {
-				var doctor = dept.doctors[i];
-
+				var doctor = dept.doctors[i];				
 				$doctorSelectBox.append('<option value="' + doctor.id + '">' + doctor.name + '</option>');
 			}
+		}		
+		$('#emptyScheduleTime').empty();
+	}
+
+	var staffSchedule = [];
+	function doctorChange(input){
+		var selectedStaffId = $(input).val();
+		var selectedDeptId = $("#dept").val();
+		var dept = deptList[selectedDeptId];	
+		
+		
+		for ( var i = 0; i < dept.doctors.length; i++ ) {			
+			var doctor = dept.doctors[i];			
+			if(doctor.id == selectedStaffId){
+				staffSchedule = doctor.schedules;							
+				break;		
+			}				
+		}	
+
+		$('#emptyScheduleTime').empty();
+	}
+
+	function scheduleTimeChange(input){
+						
+		var $timeContainer = $("#emptyScheduleTime");
+		$timeContainer.empty();
+		
+		var selectedDate = $(input).val();
+		
+		
+		for(var i=0 ;i<staffSchedule.length ;i++){			
+			var schedule = staffSchedule[i];
+						
+			if(schedule.date == selectedDate){
+				$timeContainer.append("<option value='"+schedule.id+"'>"+schedule.startTime+ " ~ " +schedule.endTime + "</option>");
+			}
+		}
+		if(!$timeContainer.children().length){
+			$timeContainer.append("<option value=''>없음</option>");
 		}
 	}
+
+	function submitCounselReservationForm(form){
+		form.doctor.value = form.doctor.value.trim(); 
+		form.body.value = form.body.value.trim();
+		form.scheduleId.value = form.scheduleId.value.trim();
+		
+		var doctor = form.doctor.value;
+		var scheduleId = form.scheduleId.value;
+		var body = form.body.value;
+
+		if(!doctor.length){
+			alert("담당 의사를 선택해 주세요.");
+			return ;
+		}
+
+		if(!scheduleId.length){
+			alert("상담 시간대 선택해 주세요.");
+			return ;
+		}
+
+		if(!body.length){
+			alert("상담 내용을 작성해 주세요.");
+			return ;
+		}
+		form.submit();
+	}
+	
 </script>
 
 
 <div class="article-detail table-common con">
 	<form action="./doReservation" method="POST"
-		onsubmit="submitJoinForm(this); return false;">
-
+			onsubmit="submitCounselReservationForm(this); return false;">
+		<input type="hidden" name="relType" value="counseling">
+		<input type="hidden" name="scheduleType" value="counseling">
 		<table>
 			<colgroup>
 				<col width="80">
@@ -145,25 +233,37 @@
 		<table>
 			<tr>
 				<th>진료과 및 의료진 선택</th>
-				<td><select onchange="categoryChange(this);" name="dept">
+				<td><select id="dept" onchange="categoryChange(this);" name="dept">
 						<option value="">의료과선택</option>
 						<c:forEach var="dept" items="${deptList}">
 							<option value="${dept.id}">${dept.name}</option>
 						</c:forEach>
 				</select>
-				<td><select id="doctor"></select></td>
+				<td>
+					<select id="doctor" name="doctor" onchange="doctorChange(this);">						
+					</select>
+				</td>
 			<tr>
 			<tr>
 				<th>날짜 선택</th>
-				<td><input type="text" id="datepicker">	</td>				
+				<td><input onchange="scheduleTimeChange(this);" type="text" name="date" id="datepicker" readonly>	</td>				
 			</tr>
 			<tr>
 				<th>시간 선택</th>
-				<td><c:out value="${member.name}" escapeXml="true" /></td>
+				<td>				
+					<select id="emptyScheduleTime" name="scheduleId"></select>					
+				</td>
+			</tr>
+			<tr>
+				<th>내 용</th>
+				<td>				
+					<textarea name="body"></textarea>					
+				</td>
 			</tr>
 		</table>
 
-		<input type="submit" value="예약하기"> <input type="reset"
+		<input type="submit" value="예약하기">				
+		<input type="reset"
 			value="예약취소" onclick="location.href = '/';">
 	</form>
 </div>

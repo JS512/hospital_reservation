@@ -24,8 +24,43 @@
 		AND DC.staffType = '의사'
 	</select>
 
-	<select id="getOneReservation" parameterType="long"
+	<select id="getOneReservation" parameterType="map"
 		resultMap="CounselReservation">
+		SELECT *
+		FROM counselReservation
+		WHERE id = #{id}
+	</select>
+	
+	<select id="getEmptyStaffSchedule" resultMap="StaffSchedule">
+		SELECT *
+		FROM staffSchedule
+		WHERE relId = 0
+		ORDER BY startTime DESC
+	</select>
+	
+	<insert id="addCounselReservation" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO counselReservation
+		SET regDate = NOW(),
+		clientMemberId = #{loginedMemberId},
+		staffScheduleId = #{scheduleId},
+		body = #{body}
+	</insert>
+	
+	<update id="updateStaffSchedule" parameterType="map">
+		UPDATE staffSchedule
+		SET regDate = NOW(),
+		scheduleType = #{scheduleType},
+		relType = #{relType},
+		relId = #{id}
+		WHERE id = #{scheduleId}
+	</update>
+	
+	<select id="getOneStaffSchedule" parameterType="map" resultMap="StaffSchedule">
+		SELECT * FROM staffSchedule
+		WHERE id = #{scheduleId}
+	</select>
+	
+	<select id="getReservations" parameterType="long" resultMap="CounselReservation">
 		SELECT CR.*,
 		SS.startTime AS extra__startTime,
 		ST.name AS
@@ -48,6 +83,11 @@
 		WHERE CR.clientMemberId =
 		#{loginedMemberId}
 	</select>
+	
+	<delete id="cancelReservation" parameterType="map">
+		DELETE FROM counselReservation
+		WHERE id = #{id}
+	</delete>
 
 	<resultMap type="CounselReservation" id="CounselReservation">
 		<id property="id" column="id" />
